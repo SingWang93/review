@@ -1,0 +1,281 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>亚马逊辅助系统</title>
+    <meta name="description" content="亚马逊辅助系统">
+    <meta name="keywords" content="亚马逊辅助系统">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="icon" type="image/png" href="{% static 'assets/i/favicon.png' %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'assets/i/app-icon72x72@2x.png' %}">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <link rel="stylesheet" href="{% static 'assets/css/amazeui.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/css/amazeui.datatables.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/kefu.css' %}">
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    {% block css %}{% endblock %}
+</head>
+
+<body data-type="index">
+<script src="{% static 'assets/js/theme.js' %}"></script>
+<div class="am-g tpl-g">
+    <!-- 头部 -->
+    <header>
+        <!-- logo -->
+        <div class="am-fl tpl-header-logo">
+                <span>亚马逊辅助系统</span> <i class="am-icon-skyatlas"></i>
+        </div>
+        <!-- 右侧内容 -->
+        <div class="tpl-header-fluid">
+            <!-- 侧边切换 -->
+            <div class="am-fl tpl-header-switch-button am-icon-list">
+            </div>
+            <div class="am-fr tpl-header-navbar">
+                <ul>
+                    <!-- 欢迎语 -->
+                    <li class="am-text-sm tpl-header-navbar-welcome">
+                        <a href="javascript:;">欢迎你, <span>{{ username }}</span> </a>
+                    </li>
+                    <li class="am-text-sm">
+                        <a href="/logout/">
+                            <span class="am-icon-sign-out"></span> 退出
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </header>
+    <!-- 风格切换 -->
+    <div class="tpl-skiner">
+        <div class="tpl-skiner-toggle am-icon-cog">
+        </div>
+        <div class="tpl-skiner-content">
+            <div class="tpl-skiner-content-title">
+                选择主题
+            </div>
+            <div class="tpl-skiner-content-bar">
+                <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                <span class="skiner-color skiner-black" data-color="theme-black"></span>
+            </div>
+        </div>
+    </div>
+    <!-- 侧边导航栏 -->
+    <div class="left-sidebar">
+        <!-- 用户信息 -->
+        <div class="tpl-sidebar-user-panel">
+            <div class="tpl-user-panel-slide-toggleable">
+                <div class="tpl-user-panel-profile-picture">
+                    <img src="{% static 'assets/img/user.png' %}" alt="">
+                </div>
+                <span class="user-panel-logged-in-text">
+              <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
+              {{ username }}
+          </span>
+                {#                <a href="javascript:;" class="tpl-user-panel-action-link"> <span class="am-icon-pencil"></span> 账号设置</a>#}
+            </div>
+        </div>
+
+        <!-- 菜单 -->
+        <ul class="sidebar-nav">
+            {#                <li class="sidebar-nav-heading">Components <span class="sidebar-nav-heading-info"> 附加组件</span></li>#}
+            <li class="sidebar-nav-link">
+                <a href="/" class="active">
+                    <i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+                </a>
+            </li>
+
+            <li class="sidebar-nav-heading">Tools<span class="sidebar-nav-heading-info"> 常用工具</span></li>
+            <li class="sidebar-nav-link">
+                <a href="javascript:;" class="sidebar-nav-sub-title">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 辅助工具
+                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico  {% if ask or account or cart %}sidebar-nav-sub-ico-rotate{% endif %}"></span>
+                </a>
+                <ul class="sidebar-nav sidebar-nav-sub" {% if task or account or cart or ass or ab or ab2 or kw or ac or akh %}style="display: block;"{% endif %}>
+                    <li class="sidebar-nav-link active">
+                        <a href="/task/index" {% if task %}class="sub-active"{% endif %}>
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 留评
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-link active">
+                        <a href="/account/index" {% if account %}class="sub-active"{% endif %}>
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 账号
+                        </a>
+                    </li>
+
+                    <li class="sidebar-nav-link active">
+                        <a href="/cart/index" {% if cart %}class="sub-active"{% endif %}>
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 加购
+                        </a>
+                    </li>
+                    {% if request.user.id == 5 %}
+                    <li class="sidebar-nav-link active">
+                        <a href="/ass/index" {% if ass %}class="sub-active"{% endif %}>
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span>Ass
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-link active">
+                        <a href="/ab/index" {% if ab %}class="sub-active"{% endif %}>
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span>Ab
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-link active">
+                        <a href="/ab2/index" {% if ab %}class="sub-active"{% endif %}>
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span>Ab2
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-link active">
+                        <a href="/kw/index" {% if ab %}class="sub-active"{% endif %}>
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span>手机加购
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-link active">
+                        <a href="/ac/index" {% if ac %}class="sub-active"{% endif %}>
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span>Ac
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-link active">
+                        <a href="/akh/index" {% if akh %}class="sub-active"{% endif %}>
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span>AKH
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="javascript:;" class="sidebar-nav-sub-title">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 教程
+                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico  {% if course_task %}sidebar-nav-sub-ico-rotate{% endif %}"></span>
+                </a>
+                <ul class="sidebar-nav sidebar-nav-sub" {% if course_task %}style="display: block;"{% endif %}>
+                    <li class="sidebar-nav-link active">
+                        <a href="/task/tutorial" {% if course_task %}class="sub-active"{% endif %}>
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 留评
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="javascript:;" class="sidebar-nav-sub-title">
+                    <i class="am-icon-table sidebar-nav-link-logo"></i> 日志
+                    <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico  {% if review_log or cart_log %}sidebar-nav-sub-ico-rotate{% endif %}"></span>
+                </a>
+                <ul class="sidebar-nav sidebar-nav-sub" {% if review_log or cart_log %}style="display: block;"{% endif %}>
+                    <li class="sidebar-nav-link active">
+                        <a href="/task/log" {% if review_log %}class="sub-active"{% endif %}>
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 留评
+                        </a>
+                    </li>
+
+                    <li class="sidebar-nav-link active">
+                        <a href="/cart/log" {% if cart_log %}class="sub-active"{% endif %}>
+                            <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 加购
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="/package/">
+                    <i class="am-icon-home sidebar-nav-link-logo"></i> 套餐
+                </a>
+            </li>
+            {% if request.user.is_superuser %}
+                <li class="sidebar-nav-link">
+                    <a href="/user/">
+                        <i class="am-icon-home sidebar-nav-link-logo"></i> 用户管理
+                    </a>
+                </li>
+            {% endif %}
+            <li class="sidebar-nav-link">
+                <a href="#" class="change">
+                    <i class="am-icon-key sidebar-nav-link-logo "></i> 修改密码
+                </a>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="/logout/">
+                    <i class="am-icon-sign-out sidebar-nav-link-logo"></i> 退出
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+        {% block content %}{% endblock %}
+        <div style="right:-230px;" class="contactusdiyou">
+            <div class="hoverbtn">
+                <span>联</span><span>系</span><span>我</span><span>们</span>
+                <img class="hoverimg" src="{% static 'assets/img/hoverbtnbg.gif' %}" height="9" width="13">
+            </div>
+            <div class="conter">
+                <div class="weixincall">
+                    <dl class="fn_cle">
+                        <dt><img src="{% static 'assets/img/weixin.png' %}" height="31" width="31"></dt>
+                        <dd class="f1">客服微信：</dd>
+                        <dd class="f3"><img src="{% static 'assets/img/qrcode.jpg' %}" class="am-img" alt=""/></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block modal %}{% endblock %}
+    <div class="am-modal am-modal-pwd am-modal-no-btn" tabindex="-1">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">修改密码/Change Password
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="tpl-block ">
+                <div class="am-g tpl-amazeui-form">
+                    <form class="am-form am-form-pwd am-form-horizontal">
+                        {% csrf_token %}
+                        <input class="id" type="hidden" name="id" id="id_id" value="{{ id }}">
+                        {% for form in pwd_forms %}
+                            <div class="am-form-group">
+                                <label for="{{ form.id_for_label }}"
+                                       class="am-u-sm-3 am-form-label">{{ form.label }}</label>
+                                <div class="am-u-sm-9">
+                                    {{ form }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                <button type="submit" class="am-btn am-btn-primary">保存/Save</button>
+                            </div>
+                        </div>
+                        {{ forms.non_field_errors }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/js/amazeui.min.js' %}"></script>
+<script src="{% static 'assets/js/amazeui.datatables.min.js' %}"></script>
+<script src="{% static 'assets/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'assets/js/app.js' %}"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".contactusdiyou").hover(function () {
+            $(".hoverimg").attr("src", "images/hoverbtnbg1.gif");
+            $('.diyoumask').fadeIn();
+            $('.contactusdiyou').animate({right: '0'}, 300);
+        }, function () {
+            $(".hoverimg").attr("src", "images/hoverbtnbg.gif");
+            $('.contactusdiyou').animate({right: '-230px'}, 300, function () {
+            });
+            $('.diyoumask').fadeOut();
+        });
+    });
+</script>
+{% block script %}{% endblock %}
+</body>
+
+
+</html>

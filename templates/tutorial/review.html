@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'assets/css/amazeui.datetimepicker.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container-fluid am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 留评教程
+                    <small>Review Tutorial</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-content am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">步骤</div>
+                    </div>
+                    <div class="widget-body  widget-body-lg am-fr">
+                        <ol>
+                            <li>1、充值套餐</li>
+                            <li>2、导入买手：辅助工具--帐号--上传添加
+                                <ol>
+                                    <li>
+                                        <ol>
+                                            <li>注: <code>***请确保买手有评价权限***</code>(您也可以使用系统的买手，会扣多点积分)</li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li>3、添加留评任务：
+                                <ol>
+                                    <li>
+                                        <ol>
+                                            <li>1、新增：勾选平台，选择是ASIN还是SELLERID，填入Asin/SellerId</li>
+                                            <li>2、评论总数一定要对应选对</li>
+                                            <li>3、评论内容格式： 标题|内容，如没有标题的，就|内容，</li>
+                                            <li>举例：
+                                                Great sound quality|I must say this is a upgrade to my Awei flex the bass is very deep and mids are just right the highs perfect sound isolation excellent makes you focus more on the music tested on a
+                                                iphone 6s and Samsung s4 mini and samsung s8 plus all the inline controls works
+                                            </li>
+                                            <li>4、填写直评的时间，务必是当前时间之后</li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li>4、执行结果在日志里面查看，因为平台因素，可能有的评论会在第二天显示。</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+

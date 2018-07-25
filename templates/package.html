@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+    <div class="container-fluid am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 积分充值购买缴费
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-content am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">套餐</div>
+                    </div>
+                    <div class="widget-body  widget-body-lg am-fr">
+                        <table width="100%" class="am-table am-table-compact tpl-table-black" id="datatable">
+                            <thead>
+                            <tr>
+                                <th>积分包</th>
+                                <th>积分数</th>
+                                <th>价格</th>
+                                <th>付款方式</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for package in packages %}
+                                <tr>
+                                    <td>{{ package.name }}</td>
+                                    <td>{{ package.integral }}积分</td>
+                                    <td>￥{{ package.price }}</td>
+                                    <td>
+                                        <a class="am-btn am-btn-secondary" href="/pay?setPackId={{ package.id }}&type=0" target="_self"><i class="am-icon-credit-card"></i>支付宝</a>
+{#                                        <a class="am-btn am-btn-success" href="/pay?setMealId=4&type=0&keyCode=" target="_blank"><i class="am-icon-weixin"></i>微信</a>#}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">功能详情</div>
+                    </div>
+                    <div class="widget-body  widget-body-lg am-fr">
+                        <table width="100%" class="am-table am-table-compact tpl-table-black">
+                            <thead>
+                            <tr>
+                                <th>功能名称</th>
+                                <th>功能介绍</th>
+                                <th>积分消耗</th>
+                                <th>支持站点</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for integral in integrals %}
+                                <tr>
+                                    <td>{{ integral.name }}</td>
+                                    <td>{{ integral.describe }}</td>
+                                    <td>{{ integral.integral }}</td>
+                                    <td>{{ integral.site }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+

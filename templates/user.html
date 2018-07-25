@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'assets/css/amazeui.datetimepicker.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container-fluid am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 用户列表
+                    <small>User List</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-content am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">用户</div>
+                    </div>
+                    <div class="widget-body  widget-body-lg am-fr">
+                        <table width="100%" class="am-table am-table-compact tpl-table-black" id="datatable">
+                            <thead>
+                            <tr>
+                                <th class="table-keyword">用户名</th>
+                                <th class="table-keyword">是否激活</th>
+                                <th class="table-set">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block script %}
+    <script src="{% static 'assets/js/amazeui.datetimepicker.js' %}"></script>
+    <script src="{% static 'assets/js/amazeui.datetimepicker.min.js' %}"></script>
+    <script type="application/javascript">
+        var table = $("#datatable").DataTable({
+            "dom": '<"top"f >rt<"bottom"ilp><"clear"l>',//dom定位
+            "processing": true,
+            "serverSide": true,
+            "bStateSave": true,
+            "scrollY": "100%",
+            "lengthChange": true,//是否允许用户自定义显示数量
+            "bPaginate": true, //翻页功能
+            "searching": false,//本地搜索
+            "ordering": false, //排序功能
+            "Info": false,//页脚信息
+            "autoWidth": true,//自动宽度
+            "bLengthChange": false,
+            "iDisplayLength": 20,
+            "oLanguage": {//国际语言转化
+                "sLengthMenu": "显示 _MENU_ 记录",
+                "sZeroRecords": "对不起，查询不到任何相关数据",
+                "sEmptyTable": "未有相关数据",
+                "sLoadingRecords": "正在加载数据-请等待...",
+                "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录。",
+                "sInfoEmpty": "当前显示0到0条，共0条记录",
+                "sInfoFiltered": "（数据库中共为 _MAX_ 条记录）",
+                "sProcessing": "正在加载数据...",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "<< ",
+                    "sNext": " >>",
+                    "sLast": " 尾页 "
+                }
+            },
+            "sAjaxSource": "/usersource/",
+            "fnServerData": function (sSource, aoData, fnCallback) {
+                var keyword = $("input.keyword").val();
+                if (keyword) {
+                    aoData.push({"name": "keyword", "value": keyword});
+                }
+                $.ajax({
+                    "contentType": "application/json; charset=utf-8",
+                    "url": sSource,
+                    "data": aoData,
+                    "success": fnCallback
+                });
+            },
+            "aoColumns": [
+                {"mData": "username"},
+                {"mData": "status"},
+                {
+                    "render": function (data, type, row) {
+                        var id = '"' + row.id + '"';
+                        var html = "<div class=\"am-btn-toolbar\">";
+                        html += "<div class=\"am-btn-group am-btn-group-xs\">";
+                        if (row.is_active !== 1) {
+                            html += "<button class=\"active am-btn am-btn-default am-btn-xs am-text-secondary\"><span class=\"am-icon-pencil-square-o\"></span> 激活</button>";
+                        }
+                        else {
+                            html += "<button class=\"disable am-btn am-btn-default am-btn-xs am-text-danger\"><span class=\"am-icon-pencil-square-o\"></span> 禁用</button>";
+                        }
+                        html += "</div>";
+                        html += "</div>";
+                        return html;
+                    }, "width": "15%"
+                }
+            ]
+        });
+        table.on('click', 'button.active', function (e) {
+            e.preventDefault();
+            if (confirm("确定要激活该用户？")) {
+                var index = table.row($(this).parents('tr')).index();
+                var data = table.data()[index];
+                $.ajax({
+                    type: 'POST',
+                    url: '/enableuser/',
+                    data: {"csrfmiddlewaretoken": "{{ csrf_token }}", "id": data.id},
+                    success: function (data, status) {
+                        if (!data.ret) {
+                            alert('激活成功!');
+                            {#table.draw(false);#}
+                            table.ajax.reload();
+                            {#table.row('.selected').remove().draw(false);#}
+                        }
+                        else {
+                            alert(data.msg);
+                        }
+                    },
+                    error: function (data) {
+                        alert(data.status + ':' + data.statusText);
+                    }
+                });
+            }
+        });
+        table.on('click', 'button.disable', function (e) {
+            e.preventDefault();
+            if (confirm("确定要禁用该用户？")) {
+                var index = table.row($(this).parents('tr')).index();
+                var data = table.data()[index];
+                $.ajax({
+                    type: 'POST',
+                    url: '/disableuser/',
+                    data: {"csrfmiddlewaretoken": "{{ csrf_token }}", "id": data.id},
+                    success: function (data, status) {
+                        if (!data.ret) {
+                            alert('禁用成功!');
+                            {#table.draw(false);#}
+                            table.ajax.reload();
+                            {#table.row('.selected').remove().draw(false);#}
+                        }
+                        else {
+                            alert(data.msg);
+                        }
+                    },
+                    error: function (data) {
+                        alert(data.status + ':' + data.statusText);
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
+
+

@@ -1,0 +1,19 @@
+from django.conf.urls import url
+from views import *
+
+urlpatterns = [
+    url(r'^index', index),
+    url(r'^tutorial', tutorial),
+    url(r'^source/', source),
+    url(r'^save', save),
+    url(r'^upload/', upload),
+    url(r'^insert/', insert),
+    url(r'^delete', delete),
+    url(r'^log', log),
+    url(r'^get_buyers', get_buyers),
+    url(r'^daily_server', daily_server),
+    url(r'^daily_buyer', daily_buyer),
+    url(r'^update_quantity', update_quantity),
+    url(r'^insert_log', insert_log),
+    url(r'^update_buyer', update_buyer),
+]

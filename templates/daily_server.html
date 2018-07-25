@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'assets/css/amazeui.datetimepicker.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container-fluid am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 任务列表
+                    <small>Task List</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-content am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                       <div class="am-g doc-am-g">
+                            <div class="am-u-sm-2">今日各服务器加购</div>
+                            <div class="am-u-sm-3"><a href="/ab2/index" style="color:white">ab2</a></div>
+                            <div class="am-u-sm-3"><a href="/ab2/daily_buyer" style="color:white">买手加购信息</a></div>
+                        </div>
+                    </div>
+
+                    <div class="widget-body  widget-body-lg am-fr">
+                        <table width="100%" class="am-table am-table-compact tpl-table-black" id="datatable">
+                            <thead>
+                            <tr>
+                                <th class="table-keyword">ip</th>
+                                <th class="table-keyword">总次数</th>
+<!--                                <th class="table-datetime">任务分配</th> -->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block modal %}
+    <div class="am-modal am-modal-task am-modal-no-btn" tabindex="1">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">新建/New
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-alert am-alert-danger" data-am-alert>
+                使用自导的账号，请在任务完成后确认加购是否成功！避免重复加购！！！
+            </div>
+            <div class="tpl-block ">
+                <div class="am-g tpl-amazeui-form">
+                    <form class="am-form am-form-task am-form-horizontal">
+                        {% csrf_token %}
+                        <input class="id" type="hidden" name="id" id="id_id">
+                        {% for form in forms %}
+                            <div class="am-form-group">
+                                <label for="{{ form.id_for_label }}"
+                                       class="am-u-sm-3 am-form-label">{{ form.label }}</label>
+                                <div class="am-u-sm-9">
+                                    {{ form }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                <button type="submit" class="am-btn am-btn-primary">保存/Save</button>
+                            </div>
+                        </div>
+                        {{ forms.non_field_errors }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="am-modal am-modal-upload am-modal-no-btn" tabindex="-1">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">文件上传
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="tpl-block ">
+                <div class="am-g tpl-amazeui-form">
+                    <form class="am-form am-form-upload am-form-horizontal" enctype ="multipart/form-data">
+                        <input type='hidden' name='csrfmiddlewaretoken' value='44X4PwC7eG0YwoTja91bTRsHH1FwpCZNt52PnFpb4UJvAYQBg2y79SO7LSXanzsc' />
+                        <div class="am-form-group">
+                            <label for="id_tag" class="am-u-sm-3 am-form-label">标签/Tag</label>
+                            <div class="am-u-sm-9">
+                                <select name="tag" id="id_tag">
+                                    {% for tag in tags %} 
+                                    <option value={{ tag.id }}>{{ tag.name}}</option>
+                                    {% endfor %}
+                                
+                                </select>
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label class="am-u-sm-3 am-form-label">文件上传域</label>
+                            <div class="am-u-sm-9">
+                                <input type="file" name="file" class="am-form-field">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                <button type="submit" class="am-btn am-btn-primary">上传/Upload</button>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'assets/js/amazeui.datetimepicker.js' %}"></script>
+    <script src="{% static 'assets/js/amazeui.datetimepicker.min.js' %}"></script>
+    <script type="application/javascript">
+        $(function () {
+            $('#id_starttime').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                pickerPosition: "top-right",
+                startDate: new Date()
+            });
+        });
+        $(document).ready(function () {
+            var columns = ["ip","total"]; //, "sync_status"];
+            $('#datatable').datatableInit(columns, "server", "{{ csrf_token }}","a","a");
+        });
+    </script>
+{% endblock %}

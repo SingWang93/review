@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'assets/css/amazeui.upload.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/amazeui.datatables.min.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container-fluid am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 账号列表
+                    <small>Account List</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-content am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">账号列表  (账号同步评论权限,会有延迟)</div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6">
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button type="button" class="new am-btn am-btn-default am-btn-success"><span
+                                        class="am-icon-plus"></span> 新增
+                                </button>
+                                <button type="button" class="upload am-btn am-btn-default am-btn-secondary"><span
+                                        class="am-icon-archive"></span> 上传
+                                </button>
+                                <button type="button" class="check am-btn am-btn-default am-btn-warning"><span
+                                        class="am-icon-archive"></span> 全选/反选
+                                </button>
+                                <button type="button" class="batchdelete am-btn am-btn-default am-btn-danger"><span
+                                        class="am-icon-trash-o"></span> 批量删除
+                                </button>
+                                <button type="button" class="download am-btn am-btn-default am-btn-danger"><span
+                                        class="am-icon-trash-o"></span> 下载模版
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget-body  widget-body-lg am-fr">
+                        <table width="100%" class="am-table am-table-compact tpl-table-black" id="datatable">
+                            <thead>
+                            <tr>
+                                <th class="table-check"></th>
+                                <th class="table-keyword">名词</th>
+                                <th class="table-keyword">邮箱</th>
+                                <th class="table-datetime">密码</th>
+                                <th class="table-datetime">Cookie是否可用</th>
+                                <!--<th class="table-datetime">Cookie是否可用</th>
+                                <th class="table-datetime">评论权限</th> -->
+                                <th class="table-datetime">Tag</th>
+                                <th class="table-set">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block modal %}
+    <div class="am-modal am-modal-task am-modal-no-btn" tabindex="-1">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">新建/编辑
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="tpl-block ">
+                <div class="am-g tpl-amazeui-form">
+                    <form class="am-form am-form-task am-form-horizontal">
+                        {% csrf_token %}
+                        <input class="id" type="hidden" name="id" id="id_id">
+                        {% for form in forms %}
+                            <div class="am-form-group">
+                                <label for="{{ form.id_for_label }}"
+                                       class="am-u-sm-3 am-form-label">{{ form.label }}</label>
+                                <div class="am-u-sm-9">
+                                    {{ form }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="am-form-group">
+                            <label for="id_tag" class="am-u-sm-3 am-form-label">标签</label>
+                            <div class="am-u-sm-9">
+                                <select name="tag" id="id_tag">
+                                    {% for tag in tags %}
+                                        <option value="{{ tag.id }}">{{ tag.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                <button type="submit" class="am-btn am-btn-primary">保存</button>
+                            </div>
+                        </div>
+                        {{ forms.non_field_errors }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-upload am-modal-no-btn" tabindex="-1">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">文件上传
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="tpl-block ">
+                <div class="am-g tpl-amazeui-form">
+                    <form class="am-form am-form-upload am-form-horizontal" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="am-form-group">
+                            <label for="id_tag" class="am-u-sm-3 am-form-label">标签</label>
+                            <div class="am-u-sm-9">
+                                <select name="tag" id="id_tag">
+                                    {% for tag in tags %}
+                                        <option value="{{ tag.id }}">{{ tag.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="mode" class="am-u-sm-3 am-form-label">方式</label>
+                            <div class="am-u-sm-9">
+                                <select name="mode" id="mode">
+                                    <option value="0">新建</option>
+                                    <option value="1">更新</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label class="am-u-sm-3 am-form-label">文件上传域</label>
+                            <div class="am-u-sm-9">
+                                <input type="file" name="file" class="am-form-field">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                <button type="submit" class="am-btn am-btn-primary">上传/Upload</button>
+                            </div>
+                        </div>
+                        {{ forms.non_field_errors }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block script %}
+    <script src="{% static 'assets/js/amazeui.upload.js' %}"></script>
+    <script src="{% static 'assets/js/amazeui.upload.template.js' %}"></script>
+    <script src="{% static 'assets/js/amazeui.upload.event.js' %}"></script>
+    <script src="{% static 'assets/js/amazeui.datatables.min.js' %}"></script>
+    <script type="application/javascript">
+        $(document).ready(function () {
+            var columns = ["name", "email", "password", "enable_cookie","tag_name"];
+            $('#datatable').datatableInit(columns, "account", "{{ csrf_token }}");
+        });
+    </script>
+{% endblock %}
+
+
+

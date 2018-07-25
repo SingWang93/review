@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'assets/css/amazeui.datetimepicker.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container-fluid am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 任务列表
+                    <small>Task List</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-content am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">Ac</div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6">
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button type="button" class="new am-btn am-btn-default am-btn-success"><span
+                                        class="am-icon-plus"></span> 新增
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget-body  widget-body-lg am-fr">
+                        <table width="100%" class="am-table am-table-compact tpl-table-black" id="datatable">
+                            <thead>
+                            <tr>
+                                <th class="table-check"></th>
+                                <th class="table-keyword">Asin</th>
+                                <th class="table-keyword">平台</th>
+                                <th class="table-keyword">次数</th>
+                                <th class="table-datetime">开始时间</th>
+<!--                                 <th class="table-datetime">任务分配</th> -->
+                                <th class="table-set">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block modal %}
+    <div class="am-modal am-modal-task am-modal-no-btn" tabindex="1">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">新建/New
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-alert am-alert-danger" data-am-alert>
+                使用自导的账号，请在任务完成后确认加购是否成功！避免重复加购！！！
+            </div>
+            <div class="tpl-block ">
+                <div class="am-g tpl-amazeui-form">
+                    <form class="am-form am-form-task am-form-horizontal">
+                        {% csrf_token %}
+                        <input class="id" type="hidden" name="id" id="id_id">
+                        {% for form in forms %}
+                            <div class="am-form-group">
+                                <label for="{{ form.id_for_label }}"
+                                       class="am-u-sm-3 am-form-label">{{ form.label }}</label>
+                                <div class="am-u-sm-9">
+                                    {{ form }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                <button type="submit" class="am-btn am-btn-primary">保存/Save</button>
+                            </div>
+                        </div>
+                        {{ forms.non_field_errors }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'assets/js/amazeui.datetimepicker.js' %}"></script>
+    <script src="{% static 'assets/js/amazeui.datetimepicker.min.js' %}"></script>
+    <script type="application/javascript">
+        $(function () {
+            $('#id_starttime').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                pickerPosition: "top-right",
+                startDate: new Date()
+            });
+        });
+        $(document).ready(function () {
+            var columns = ["asin", "tag_name", "total", "starttime"]; //, "sync_status"];
+            $('#datatable').datatableInit(columns, "ac", "{{ csrf_token }}");
+        });
+    </script>
+{% endblock %}

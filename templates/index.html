@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+    <div class="container-fluid am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 账号信息
+                    <small>Task List</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row-content am-cf">
+        <div class="row  am-cf">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">买手详情</div>
+                        <div class="widget-function am-fr">
+                            <a href="javascript:;" class="am-icon-cog"></a>
+                        </div>
+                    </div>
+                    <div class="widget-body am-fr">
+                        <div class="am-fl">
+                            <div class="widget-fluctuation-period-text">
+                                <p>当前买手数:{{ total }}</p>
+                                <!-- <p>Cookie可用数:{{ total_cookie }}</p>
+                                <p>有评论权限总数:{{ total_review }}</p> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">套餐详情</div>
+                        <div class="widget-function am-fr">
+                            <a href="javascript:;" class="am-icon-cog"></a>
+                        </div>
+                    </div>
+                    <div class="widget-body am-fr">
+                        <div class="am-fl">
+                            <div class="widget-fluctuation-period-text">
+                                <p>当前账号剩余积分:{{ integral }}</p>
+<!--                                <p>可用评论条数:100</p>
+                                <p>本月评论条数:100</p>
+                                <p>上月评论条数:100</p> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">评论任务(前10条)</div>
+                        <div class="widget-function am-fr">
+                            <a href="/task/index" class="am-icon-eye"> More.. </a>
+                        </div>
+                    </div>
+                    <div class="widget-body  widget-body-lg am-fr">
+
+                        <table width="100%" class="am-table am-table-compact tpl-table-black " id="example-r">
+                            <thead>
+                            <tr>
+                                <th class="table-keyword">Asin/SellerID</th>
+                                <th class="table-keyword">类型</th>
+                                <th class="table-keyword">平台</th>
+                                <th class="table-keyword">评论数</th>
+                                <th class="table-keyword">评论</th>
+                                <th class="table-datetime">时间</th>
+                                <th class="table-datetime">任务分配</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for review in reviews %}
+                                <tr class="gradeX">
+                                    <td>{{ review.keyword }}</td>
+                                    <td>{{ review.mode_type }}</td>
+                                    <td>{{ review.tag_name }}</td>
+                                    <td>{{ review.total }}</td>
+                                    <td>{{ review.content }}</td>
+                                    <td>{{ review.createtime }}</td>
+                                    <td>{{ review.sync_status }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

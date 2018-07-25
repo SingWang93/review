@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'assets/css/amazeui.datetimepicker.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container-fluid am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 日志列表
+                    <small>Task List</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-content am-cf">
+        <div class="row">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">日志</div>
+                    </div>
+
+                    <div class="widget-body  widget-body-lg am-fr">
+                        <table width="100%" class="am-table am-table-compact tpl-table-black" id="datatable">
+                            <thead>
+                            <tr>
+                                <th class="table-set">ASIN/SellerID</th>
+                                <th class="table-set">评论</th>
+                                <th class="table-set">积分费用</th>
+                                <th class="table-set">买手号</th>
+                                <th class="table-set">时间</th>
+                                <th class="table-set">评论编号</th>
+                                <th class="table-set">状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for log in logs %}
+                            <tr>
+                                <td>{{ log.asin }}</td>
+                                <td>{{ log.content }}</td>
+                                <td>{{ log.integral }}</td>
+                                <td>{{ log.name }}</td>
+                                <td>{{ log.createtime }}</td>
+                                <td>{{ log.reviewid }}</td>
+                                <td>{{ log.review_status }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script type="application/javascript">
+        var table = $("#datatable").DataTable({
+            "dom": '<"top"f >rt<"bottom"ilp><"clear"l>',//dom定位
+            "scrollY": "100%",
+            "lengthChange": true,//是否允许用户自定义显示数量
+            "bPaginate": true, //翻页功能
+            "searching": true,//本地搜索
+            "ordering": false, //排序功能
+            "Info": false,//页脚信息
+            "autoWidth": true,//自动宽度
+            "bLengthChange": false,
+            "iDisplayLength": 20,
+            "oLanguage": {//国际语言转化
+                "sLengthMenu": "显示 _MENU_ 记录",
+                "sZeroRecords": "对不起，查询不到任何相关数据",
+                "sEmptyTable": "未有相关数据",
+                "sLoadingRecords": "正在加载数据-请等待...",
+                "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录。",
+                "sInfoEmpty": "当前显示0到0条，共0条记录",
+                "sInfoFiltered": "（数据库中共为 _MAX_ 条记录）",
+                "sProcessing": "正在加载数据...",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "<< ",
+                    "sNext": " >>",
+                    "sLast": " 尾页 "
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
+
