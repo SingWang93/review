@@ -121,17 +121,17 @@ def save(request):
         pass
     if rank:
         option = request.POST.get("option")
-        if int(option):
-            accounts = Account.objects.filter(delflag=0, tag_id=request.POST.get('tag'), createuser_id=5)
-            if accounts.count() == 0:
-                result = {"ret": 10000, "status": "failed", "msg": "当前系统下没有买手号,请联系客服!"}
-                return HttpResponse(json.dumps(result), content_type="application/json")
-            integral = 100
-        else:
-            accounts = Account.objects.filter(delflag=0, tag_id=request.POST.get('tag'), createuser_id=request.user.id,enable_review=0)
-            if accounts.count() == 0:
-                result = {"ret": 10000, "status": "failed", "msg": "当前账号下没有买手号!"}
-                return HttpResponse(json.dumps(result), content_type="application/json")
+        # if int(option):
+        #     accounts = Account.objects.filter(delflag=0, tag_id=request.POST.get('tag'), createuser_id=5)
+        #     if accounts.count() == 0:
+        #         result = {"ret": 10000, "status": "failed", "msg": "当前系统下没有买手号,请联系客服!"}
+        #         return HttpResponse(json.dumps(result), content_type="application/json")
+        #     integral = 100
+        # else:
+        #     accounts = Account.objects.filter(delflag=0, tag_id=request.POST.get('tag'), createuser_id=request.user.id,enable_review=0)
+        #     if accounts.count() == 0:
+        #         result = {"ret": 10000, "status": "failed", "msg": "当前账号下没有买手号!"}
+        #         return HttpResponse(json.dumps(result), content_type="application/json")
         form = TaskForm(request.POST or None, instance=rank)
     else:
         option = request.POST.get("option")
@@ -146,19 +146,19 @@ def save(request):
         if int(total) > len(comments):
             result = {"ret": 10000, "status": "failed", "msg": "输入的评论总数大于设置的评论条数!"}
             return HttpResponse(json.dumps(result), content_type="application/json")
-        if int(option):
-            accounts = Account.objects.filter(delflag=0, tag_id=request.POST.get('tag'), createuser_id=5,enable_review=0)
-            if accounts.count() == 0:
-                result = {"ret": 10000, "status": "failed", "msg": "当前系统下没有买手号,请联系客服!"}
-                return HttpResponse(json.dumps(result), content_type="application/json")
-            integral = 100
-        else:
-            accounts = Account.objects.filter(delflag=0, tag_id=request.POST.get('tag'), createuser_id=request.user.id)
-            if accounts.count() == 0:
-                result = {"ret": 10000, "status": "failed", "msg": "当前账号下没有买手号!"}
-                return HttpResponse(json.dumps(result), content_type="application/json")
-            discount = request.user.user_profile.discount
-            integral = int(30 * (discount / 100.0))
+        # if int(option):
+        #     accounts = Account.objects.filter(delflag=0, tag_id=request.POST.get('tag'), createuser_id=5,enable_review=0)
+        #     if accounts.count() == 0:
+        #         result = {"ret": 10000, "status": "failed", "msg": "当前系统下没有买手号,请联系客服!"}
+        #         return HttpResponse(json.dumps(result), content_type="application/json")
+        integral = 100
+        # else:
+        #     accounts = Account.objects.filter(delflag=0, tag_id=request.POST.get('tag'), createuser_id=request.user.id)
+        #     if accounts.count() == 0:
+        #         result = {"ret": 10000, "status": "failed", "msg": "当前账号下没有买手号!"}
+        #         return HttpResponse(json.dumps(result), content_type="application/json")
+        #     discount = request.user.user_profile.discount
+        #     integral = int(30 * (discount / 100.0))
         total_integral = integral * len(comments)
         if Profile.objects.get(user_id=request.user.id).integral < total_integral:
             result = {"ret": 10000, "status": "failed", "msg": "当前账号积分不足!"}
